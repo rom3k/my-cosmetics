@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "outDir": "./public",
+    "noImplicitAny": true,
+    "target": "es6"
+  }
+}

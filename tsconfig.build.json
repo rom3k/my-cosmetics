@@ -1,4 +1,16 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "include": ["src/backend"],
+  "exclude": [
+    "node_modules",
+    "src/backend/test",
+    "src/frontend",
+    "dist",
+    "public",
+    "**/*spec.ts"
+  ],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "declaration": false
+  }
 }
