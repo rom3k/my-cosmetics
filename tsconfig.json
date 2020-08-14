@@ -4,7 +4,6 @@
     "moduleResolution": "node",
     "target": "es5",
     "lib": ["es2017", "DOM"],
-    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "jsx": "react",
