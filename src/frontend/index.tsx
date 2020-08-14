@@ -1,7 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import loadable from '@loadable/component';
+import 'semantic-ui-css/semantic.min.css';
 
-import { Hello } from './components/Hello';
+const HelloComponent = loadable(() => import('./components/Hello'));
 
 const root = document.getElementById('root');
-ReactDOM.render(<Hello />, root);
+ReactDOM.render(<HelloComponent />, root);

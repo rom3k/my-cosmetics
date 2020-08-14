@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { loadableTransformer } = require('loadable-ts-transformer');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
 // Small trick to have Webpack IntelliSense in VSCode
 /** @type {import('webpack').Configuration} */
@@ -8,10 +10,11 @@ module.exports = {
   mode: 'development',
   devtool: 'source-map',
   entry: {
-    app: path.resolve(__dirname, 'src', 'frontend', 'index.tsx'),
+    main: path.resolve(__dirname, 'src', 'frontend', 'index.tsx'),
   },
   output: {
-    chunkFilename: 'chunk-[name].js',
+    filename: 'main.js',
+    chunkFilename: '[contenthash].js',
     path: path.resolve(__dirname, 'public'),
   },
   resolve: {
@@ -25,14 +28,16 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
+              transpileOnly: true,
               configFile: path.resolve(__dirname, 'tsconfig.webpack.json'),
+              getCustomTransformers: () => ({ before: [loadableTransformer] }),
             },
           },
         ],
         exclude: '/node_modules/',
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.(sa|sc|c)ss$/,
         use: [
           'style-loader',
           MiniCssExtractPlugin.loader,
@@ -46,6 +51,16 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            name: '[name].[ext]',
+          },
+        },
       },
       {
         enforce: 'pre',
@@ -65,10 +80,20 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
+        default: false,
+        vendors: false,
+        vendor: {
+          name: 'vendor',
           chunks: 'all',
+          test: /node_modules/,
+        },
+        common: {
+          name: 'common',
+          minChunks: 2,
+          chunks: 'async',
+          priority: 10,
+          reuseExistingChunk: true,
+          enforce: true,
         },
       },
     },
@@ -77,6 +102,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'frontend', 'index.html'),
     }),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[contenthash].css',
+    }),
+    new LoadablePlugin(),
   ],
 };

@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es5",
+    "lib": ["es2017", "DOM"],
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "jsx": "react",
     "sourceMap": true,
     "incremental": true
   }

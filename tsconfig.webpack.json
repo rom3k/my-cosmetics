@@ -1,9 +1,9 @@
 {
   "extends": "./tsconfig.json",
+  "include": ["./src/frontend/**/*"],
   "compilerOptions": {
-    "jsx": "react",
     "outDir": "./public",
     "noImplicitAny": true,
-    "target": "es6"
+    "allowSyntheticDefaultImports": true
   }
 }
