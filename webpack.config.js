@@ -58,6 +58,7 @@ module.exports = {
           options: {
             limit: 10000,
             name: '[name].[ext]',
+            outputPath: 'assets',
           },
         },
       },
@@ -75,6 +76,27 @@ module.exports = {
         ],
       },
     ],
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        vendors: false,
+        vendor: {
+          name: 'vendor',
+          chunks: 'all',
+          test: /node_modules/,
+        },
+        common: {
+          name: 'common',
+          minChunks: 2,
+          chunks: 'async',
+          priority: 10,
+          reuseExistingChunk: true,
+          enforce: true,
+        },
+      },
+    },
   },
   plugins: [
     new CleanWebpackPlugin(),
